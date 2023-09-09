@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Random Image Grid</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Image Grid with Numbers</title>
+  <style>
+    body {
+      background-image: url('pokemon grass.png');
+      background-size: cover;
+      /* Adjust as needed to cover the entire body */
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      /* Optional: keeps the background fixed while scrolling */
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      /* Vertically center the content */
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .toggle-button {
+      font-family: Arial, sans-serif;
+      background-color: hwb(0 10% 90% / 0.251);
+      /* Background color */
+      color: hsl(0, 0%, 100%);
+      /* Text color */
+      border: 2px solid #ffffffaa;
+      /* Add border */
+      padding: 10px 20px;
+      /* Add padding */
+      border-radius: 5px;
+      /* Rounded corners */
+      font-size: 16px;
+      /* Font size */
+      cursor: pointer;
+      /* Change cursor on hover */
+      transition: background-color 0.3s;
+      /* Smooth background color transition */
+      box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+
+    #LogoutButton {
+      text-decoration: none;
+      /* Remove underline */
+      /* Add any other styling you desire */
+    }
+
+    .toggle-button.b1:hover, .toggle-button.b1[disabled] {
+      background-color: rgb(252, 245, 145);
+      /* Darker background color on hover */
+      color: #ff6464;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .toggle-button.b2:hover {
+      background-color: rgb(255, 149, 84);
+      /* Darker background color on hover */
+      color: hsl(60, 100%, 83%);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .toggle-button.b3:hover {
+      background-color: rgb(163, 234, 255);
+      /* Darker background color on hover */
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+      width: 610px;
+      height: 610px;
+      /* Adjust as needed */
+      margin: 0 auto;
+      /* Center the grid */
+      border-radius: 50%;
+    }
+
+    .grid-item {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      perspective: 1000px;
+      border-radius: 50%;
+      box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+
+    .front,
+    .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      transition: transform 0.5s;
+    }
+
+    .front {
+      transform: rotateY(0deg);
+      display: flex;
+      background: linear-gradient(to bottom, hsl(0, 98%, 60%) 45%, black 45%, black 55%, white 55%);
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      /* Ensure the content fills the entire front div */
+      color: white;
+      /* Set the text color to black */
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+      /* Add a small black shadow around the text */
+    }
+
+    .grid-item.flipped .front {
+      transform: rotateY(180deg);
+    }
+
+    .back {
+      transform: rotateY(180deg);
+      background-color: white;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grid-item.flipped .back {
+      transform: rotateY(0deg);
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="grid">
+    <script>
+
+      var finish = false;
+      var finTime = 0;
+
+      const allImages = ["image1.png",
+        "image2.png",
+        "image3.png",
+        "image4.png",
+        "image5.png",
+        "image6.png",
+        "image7.png",
+        "image8.png"];
+
+      // Shuffle the image array
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      // Shuffle the image arrays
+      const randomset1 = [...allImages];
+      const randomset2 = [...allImages];
+
+      shuffleArray(randomset1);
+      shuffleArray(randomset2);
+
+      // Combine the random image sets
+      const repeatedset = [...randomset1, ...randomset2];
+      shuffleArray(repeatedset);
+
+      // Fill the grid with images
+      $(document).ready(function () {
+        const grid = $('.grid');
+        repeatedset.forEach((imageUrl, index) => {
+          const gridItem = $('<div>').addClass('grid-item');
+          const backContent = $('<div>').addClass('back');
+          const frontContent = $('<div>').addClass('front').text(index + 1);
+          const imgElement = $('<img>').attr('src', imageUrl).attr('alt', 'Image ' + (index + 1));
+          backContent.append(imgElement);
+          gridItem.append(frontContent);
+          gridItem.append(backContent);
+          grid.append(gridItem);
+        });
+
+      });
+
+      let matchlist = [];
+      let flipcount = 0;
+
+      // Add click event to flip the grid items
+      $('.grid').on('click', '.grid-item', function () {
+        const clickcard = $(this);
+
+        if (!clickcard.hasClass('flipped') && matchlist.length < 2) {
+          clickcard.addClass('flipped');
+          matchlist.push(clickcard);
+        }
+
+        if (matchlist.length === 2) {
+          const image1 = matchlist[0].find('.back img').attr('src');
+          const image2 = matchlist[1].find('.back img').attr('src');
+
+          // Compare both cards
+          if (image1 === image2) {
+            flipcount += 2;
+            matchlist = [];
+          } else {
+            setTimeout(function () {
+              matchlist.forEach(card => card.removeClass('flipped'));
+              matchlist = [];
+            }, 1000);
+          }
+        }
+
+        if (flipcount === repeatedset.length) {
+          finish = true;
+        }
+
+      });
+
+    </script>
+
+  </div>
+
+  <div class="container">
+
+    <button class="toggle-button b1" id="toggleAllButton">Peek-achu!</button>
+    <button class="toggle-button b2" id="ReloadButton">Restart Journey</button>
+    <a href="https://memorygame527.auth.ap-southeast-2.amazoncognito.com/logout?client_id=4hand5n8i4c2o9frrjm81t3ps6&logout_uri=http%3A%2F%2Flocalhost%3A8000%2Flogout.html"
+      class="toggle-button b3" id="LogoutButton">Logout</a>
+
+    <script>
+      // View button
+      $('#toggleAllButton').on('click', function () {
+        // Disable the button
+        $(this).prop('disabled', true);
+
+        setTimeout(function () {
+        // Start a timer
+        var startTime = Date.now(); // Get the current time in milliseconds
+
+        var updateTimer = function () {
+          // Calculate the elapsed time in seconds
+          var currentTime = Date.now();
+          var elapsedTime = Math.floor((currentTime - startTime) / 1000); // Convert to seconds
+
+          // Update the button text with the elapsed time
+          $('#toggleAllButton').text('Time Elapsed: ' + elapsedTime + 's');
+          finTime = elapsedTime;
+
+          // Check if you want to stop the timer after a certain duration
+          if (finish) {
+            alert("Sweet As! You caught 'em all!! Your time: "+finTime+" seconds.");
+            // Clear the interval
+            clearInterval(intervalId);
+          }
+        };
+
+        // Update the timer every second (1000 milliseconds)
+        var intervalId = setInterval(updateTimer, 1000);},4000);//Wait for 4 seconds before starting the timer
+
+        // Add the 'flipped' class to all grid items
+        $('.grid-item').addClass('flipped');
+
+        // Set a timeout to remove the 'flipped' class after a few seconds (e.g., 2 seconds)
+        setTimeout(function () {
+          $('.grid-item').removeClass('flipped');
+        }, 4000); // 4000 milliseconds (4 seconds)
+
+        matchlist = [];
+        flipcount = 0;
+      });
+
+
+      document.getElementById('ReloadButton').addEventListener('click', function () {
+        location.reload();
+      });
+
+    </script>
+
+  </div>
+
+</body>
+
+</html>
