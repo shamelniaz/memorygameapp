@@ -44,6 +44,7 @@
       box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
       margin-right: 10px;
       margin-left: 10px;
+      text-decoration: none;
     }
 
     #LogoutButton {
@@ -52,7 +53,8 @@
       /* Add any other styling you desire */
     }
 
-    .toggle-button.b1:hover, .toggle-button.b1[disabled] {
+    .toggle-button.b1:hover,
+    .toggle-button.b1[disabled] {
       background-color: rgb(252, 245, 145);
       /* Darker background color on hover */
       color: #ff6464;
@@ -72,6 +74,14 @@
       color: #ffffff;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
+
+    .toggle-button.b4:hover {
+      background-color: hsla(0, 0%, 1%, 0.791);
+      /* Darker background color on hover */
+      color: hwb(60 4% 4%);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
 
     .grid {
       display: grid;
@@ -214,7 +224,8 @@
 
           // Compare both cards
           if (image1 === image2) {
-            flipcount += 2;
+            // flipcount += 2;
+            flipcount = repeatedset.length;
             matchlist = [];
           } else {
             setTimeout(function () {
@@ -240,6 +251,7 @@
     <button class="toggle-button b2" id="ReloadButton">Restart Journey</button>
     <a href="https://memorygame527.auth.ap-southeast-2.amazoncognito.com/logout?client_id=4hand5n8i4c2o9frrjm81t3ps6&logout_uri=http%3A%2F%2Flocalhost%3A8000%2Flogout.html"
       class="toggle-button b3" id="LogoutButton">Logout</a>
+    <a href="scorecard.html" class="toggle-button b4" id="ScoreCard">Leaderboard</a>
 
     <script>
       // View button
@@ -248,28 +260,44 @@
         $(this).prop('disabled', true);
 
         setTimeout(function () {
-        // Start a timer
-        var startTime = Date.now(); // Get the current time in milliseconds
+          // Start a timer
+          var startTime = Date.now(); // Get the current time in milliseconds
 
-        var updateTimer = function () {
-          // Calculate the elapsed time in seconds
-          var currentTime = Date.now();
-          var elapsedTime = Math.floor((currentTime - startTime) / 1000); // Convert to seconds
+          var updateTimer = function () {
+            // Calculate the elapsed time in seconds
+            var currentTime = Date.now();
+            var elapsedTime = Math.floor((currentTime - startTime) / 1000); // Convert to seconds
 
-          // Update the button text with the elapsed time
-          $('#toggleAllButton').text('Time Elapsed: ' + elapsedTime + 's');
-          finTime = elapsedTime;
+            // Update the button text with the elapsed time
+            $('#toggleAllButton').text('Time Elapsed: ' + elapsedTime + 's');
+            finTime = elapsedTime;
 
-          // Check if you want to stop the timer after a certain duration
-          if (finish) {
-            alert("Sweet As! You caught 'em all!! Your time: "+finTime+" seconds.");
-            // Clear the interval
-            clearInterval(intervalId);
-          }
-        };
+            // Check if you want to stop the timer after a certain duration
+            if (finish) {
+              alert("Sweet As! You caught 'em all!! Your time: " + finTime + " seconds.");
+              // Clear the interval
+              clearInterval(intervalId);
+              let name = prompt("Please enter your name: ");
+              var jsonValue = localStorage.getItem('jsonData');
+              if (jsonValue === null || jsonValue === undefined) {
+                var jsonString = '{"scores":[]}';
+                var jsonObj = JSON.parse(jsonString);
+                jsonObj.scores.push({ "playername": name, "besttime": finTime });
+                jsonString = JSON.stringify(jsonObj);
+                localStorage.setItem('jsonData', jsonString);
+              }
+              else {
+                var jsonObj = JSON.parse(jsonValue);
+                jsonObj.scores.push({ "playername": name, "besttime": finTime });
+                jsonString = JSON.stringify(jsonObj);
+                localStorage.setItem('jsonData', jsonString);
+              }
+            }
+          };
 
-        // Update the timer every second (1000 milliseconds)
-        var intervalId = setInterval(updateTimer, 1000);},4000);//Wait for 4 seconds before starting the timer
+          // Update the timer every second (1000 milliseconds)
+          var intervalId = setInterval(updateTimer, 1000);
+        }, 4000);//Wait for 4 seconds before starting the timer
 
         // Add the 'flipped' class to all grid items
         $('.grid-item').addClass('flipped');
