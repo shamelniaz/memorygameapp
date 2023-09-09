@@ -162,14 +162,21 @@
       var finish = false;
       var finTime = 0;
 
-      const allImages = ["image1.png",
+      function convertToFullURLs(imagesArray) {
+        const baseURL = "https://memorygamefiles.s3.ap-southeast-2.amazonaws.com/";
+        return imagesArray.map(filename => baseURL + filename);
+      }
+      const allImageswithout = [
+        "image1.png",
         "image2.png",
         "image3.png",
         "image4.png",
         "image5.png",
         "image6.png",
         "image7.png",
-        "image8.png"];
+        "image8.png"
+      ];
+      const allImages = convertToFullURLs(allImageswithout);
 
       // Shuffle the image array
       function shuffleArray(array) {
