@@ -285,17 +285,18 @@
               // Clear the interval
               clearInterval(intervalId);
               let name = prompt("Please enter your name: ");
+              let email = prompt("Please enter your email address: ");
               var jsonValue = localStorage.getItem('jsonData');
               if (jsonValue === null || jsonValue === undefined) {
                 var jsonString = '{"scores":[]}';
                 var jsonObj = JSON.parse(jsonString);
-                jsonObj.scores.push({ "playername": name, "besttime": finTime });
+                jsonObj.scores.push({ "playername": name, "playeremail": email, "besttime": finTime });
                 jsonString = JSON.stringify(jsonObj);
                 localStorage.setItem('jsonData', jsonString);
               }
               else {
                 var jsonObj = JSON.parse(jsonValue);
-                jsonObj.scores.push({ "playername": name, "besttime": finTime });
+                jsonObj.scores.push({ "playername": name, "playeremail": email, "besttime": finTime });
                 jsonString = JSON.stringify(jsonObj);
                 localStorage.setItem('jsonData', jsonString);
               }
