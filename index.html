@@ -150,6 +150,28 @@
     .grid-item.flipped .back {
       transform: rotateY(0deg);
     }
+
+    .scoretext {
+      font-family: Arial, sans-serif;
+      background-color: hwb(0 10% 90% / 0.251);
+      /* Background color */
+      color: hwb(56 0% 0%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 100px;
+      text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+      visibility: hidden;
+    }
+
+    .showtext {
+      visibility: visible;
+    }
+
+    .hidetext {
+      visibility: hidden;
+    }
+
   </style>
 
 </head>
@@ -300,6 +322,11 @@
                 jsonString = JSON.stringify(jsonObj);
                 localStorage.setItem('jsonData', jsonString);
               }
+              console.log(jsonString);
+              $('.scoretext').addClass('showtext');
+              setTimeout(function () {
+                $('.scoretext').addClass('hidetext');
+            }, 4000);
             }
           };
 
@@ -327,6 +354,7 @@
     </script>
 
   </div>
+  <h2 class="scoretext">Your score has been entered to the leaderboards.</h2>
 
 </body>
 

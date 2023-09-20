@@ -114,6 +114,7 @@
         }
         else {
             var obj = JSON.parse(jsonValue);
+            obj.scores.sort((a, b) => a.besttime - b.besttime);
         }
 
         var br1 = document.createElement("br");
