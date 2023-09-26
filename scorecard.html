@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>ScoreCard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.11.min.js"></script>
     <style>
         .toggle-button {
             font-family: Arial, sans-serif;
@@ -169,6 +171,15 @@
         button.appendChild(document.createTextNode("Clear Scores"));
         document.body.appendChild(button);
 
+        var button2 = document.createElement("a");
+        button2.className = "toggle-button";
+        button2.id = "SendEmail";
+        button2.appendChild(document.createTextNode("Email Scorecard"));
+        button2.onclick = function () {
+            sendEmailOnClick();
+        };
+        document.body.appendChild(button2);
+
         // Create the button and append it after the table
         var button = document.createElement("a");
         button.href = "index.html";
@@ -182,6 +193,69 @@
             localStorage.setItem('jsonData', jsonString);
             location.reload();
         });
+
+        // -------------------- Email the scores --------------------
+
+        AWS.config.update({
+            accessKeyId: 'AKIAXYK6GONUNPNP2IMQ',
+            secretAccessKey: 'i3CGMjMLKf1wTGrdigT6Zd3hMlj3YPz6c4gtqcbk',
+            region: 'us-east-1', // Replace with your desired AWS region
+        });
+
+        // Create an AWS SES client
+        const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+        // var jsonData = {
+        //     scores: [],
+        // };
+        function sendEmail(recipientEmail, recipientName, recipientScoreText) {
+            const params = {
+                Destination: {
+                    ToAddresses: [recipientEmail],
+                },
+                Message: {
+                    Body: {
+                        Text: {
+                            Data: `${recipientScoreText}`, // Customize the message
+                            Charset: 'UTF-8',
+                        },
+                    },
+                    Subject: {
+                        Data: `MEMGAME SCOREBOARD UPDATE!`, // Customize the subject with the user's name
+                        Charset: 'UTF-8',
+                    },
+                },
+                Source: 'ja686.b23@gmail.com', // Replace with your verified SES email
+            };
+
+            ses.sendEmail(params, function (err, data) {
+                if (!err) {
+                    console.log('Email sent successfully to ' + recipientEmail);
+                    alert('Email sent successfully to ' + recipientEmail + '!');
+                }
+            });
+        }
+
+        function sendEmailOnClick() {
+
+            var rank, recipientEmail, recipientName, recipientScore, recipientScoreText = ":::: SCORECARD ::::\n\n";
+
+            for (var i = 0; i < obj.scores.length; i++) {
+                rank = i + 1;
+                recipientName = obj.scores[i].playername;
+                recipientScore = obj.scores[i].besttime;
+                recipientScoreText += `${rank}. ${recipientName}: ${recipientScore} seconds\n\n`;
+            }
+
+            for (var i = 0; i < obj.scores.length; i++) {
+                recipientEmail = obj.scores[i].playeremail;
+                recipientName = obj.scores[i].playername;
+                console.log("Sending Email to: " + recipientEmail);
+                sendEmail(recipientEmail, recipientName, recipientScoreText);
+            }
+
+            //console.log(recipientScoreText);
+
+        }
 
     </script>
 
