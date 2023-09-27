@@ -20,7 +20,7 @@
       align-items: center;
       /* Vertically center the content */
       justify-content: center;
-      margin-top: 100px;
+      margin-top: 20px;
     }
 
     .logocontainer {
@@ -28,8 +28,8 @@
       align-items: center;
       /* Vertically center the content */
       justify-content: center;
-      margin-top: 80px;
-      margin-bottom: 80px;
+      margin-top: 40px;
+      margin-bottom: 40px;
     }
 
     .toggle-button {
@@ -168,16 +168,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 100px;
+      margin-top: 20px;
       text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+      display: none;
       visibility: hidden;
     }
 
     .showtext {
+      display: flex;
       visibility: visible;
     }
 
     .hidetext {
+      display: none;
       visibility: hidden;
     }
   </style>
@@ -186,7 +189,7 @@
 
 <body>
   <div class="logocontainer">
-    <img src="FlipMatchLOGO.png" alt="Logo" width="8%" height="8%">
+    <img src="FlipMatchLOGO.png" alt="Logo" width="12%" height="12%">
   </div>
   <div class="grid">
     <script>
@@ -284,6 +287,8 @@
 
   </div>
 
+  <h2 class="scoretext">Your score has been entered to the leaderboards.</h2>
+
   <div class="container">
 
     <button class="toggle-button b1" id="toggleAllButton">Peek-achu!</button>
@@ -364,7 +369,6 @@
     </script>
 
   </div>
-  <h2 class="scoretext">Your score has been entered to the leaderboards.</h2>
 
 </body>
 
