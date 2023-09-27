@@ -20,7 +20,16 @@
       align-items: center;
       /* Vertically center the content */
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 100px;
+    }
+
+    .logocontainer {
+      display: flex;
+      align-items: center;
+      /* Vertically center the content */
+      justify-content: center;
+      margin-top: 80px;
+      margin-bottom: 80px;
     }
 
     .toggle-button {
@@ -86,7 +95,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-gap: 10px;
+      grid-gap: 15px;
       width: 610px;
       height: 610px;
       /* Adjust as needed */
@@ -171,13 +180,14 @@
     .hidetext {
       visibility: hidden;
     }
-
   </style>
 
 </head>
 
 <body>
-
+  <div class="logocontainer">
+    <img src="FlipMatchLOGO.png" alt="Logo" width="8%" height="8%">
+  </div>
   <div class="grid">
     <script>
 
@@ -278,9 +288,9 @@
 
     <button class="toggle-button b1" id="toggleAllButton">Peek-achu!</button>
     <button class="toggle-button b2" id="ReloadButton">Restart Journey</button>
-      <a href="https://flip.auth.us-east-1.amazoncognito.com/logout?client_id=2lbd6146m5r4ts5hsahqjnjo2r&logout_uri=https%3A%2F%2Fplaynow.flipmatch.link%2Flogout.html"
-      class="toggle-button b3" id="LogoutButton">Logout</a>
     <a href="scorecard.html" class="toggle-button b4" id="ScoreCard">Leaderboard</a>
+    <a href="https://flip.auth.us-east-1.amazoncognito.com/logout?client_id=2lbd6146m5r4ts5hsahqjnjo2r&logout_uri=https%3A%2F%2Fplaynow.flipmatch.link%2Flogout.html"
+      class="toggle-button b3" id="LogoutButton">Logout</a>
 
     <script>
       // View button
@@ -326,7 +336,7 @@
               $('.scoretext').addClass('showtext');
               setTimeout(function () {
                 $('.scoretext').addClass('hidetext');
-            }, 4000);
+              }, 4000);
             }
           };
 
@@ -357,4 +367,5 @@
   <h2 class="scoretext">Your score has been entered to the leaderboards.</h2>
 
 </body>
+
 </html>

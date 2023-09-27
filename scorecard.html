@@ -7,6 +7,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.11.min.js"></script>
     <style>
+        .my-div {
+            margin-top: 30px;
+        }
+
         .toggle-button {
             font-family: Arial, sans-serif;
             background-color: hwb(0 10% 90% / 0.251);
@@ -22,8 +26,6 @@
             font-size: 16px;
             /* Font size */
             cursor: pointer;
-            /* Change cursor on hover */
-            transition: background-color 0.3s;
             /* Smooth background color transition */
             box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
             margin-right: 10px;
@@ -73,7 +75,7 @@
         }
 
         table {
-            width: 470px;
+            width: auto;
             /* Table width now takes the full width of its container */
             background-color: hwb(147 22% 64% / 0.595);
             border-radius: 10px;
@@ -153,7 +155,7 @@
             var td3 = document.createElement("td");
             var td1Text = document.createTextNode(obj.scores[i].playername);
             var td2Text = document.createTextNode(obj.scores[i].playeremail);
-            var td3Text = document.createTextNode(obj.scores[i].besttime);
+            var td3Text = document.createTextNode(obj.scores[i].besttime + " seconds");
             td1.appendChild(td1Text);
             td2.appendChild(td2Text);
             td3.appendChild(td3Text);
@@ -165,11 +167,15 @@
 
         document.body.append(tbl);
 
+        var divElement = document.createElement("div");
+        divElement.className = "my-div";
+
         var button = document.createElement("a");
         button.className = "toggle-button";
         button.id = "ClearScores";
         button.appendChild(document.createTextNode("Clear Scores"));
-        document.body.appendChild(button);
+        divElement.appendChild(button)
+        //document.body.appendChild(button);
 
         var button2 = document.createElement("a");
         button2.className = "toggle-button";
@@ -178,15 +184,19 @@
         button2.onclick = function () {
             sendEmailOnClick();
         };
-        document.body.appendChild(button2);
+        divElement.appendChild(button2)
+        //document.body.appendChild(button2);
 
         // Create the button and append it after the table
-        var button = document.createElement("a");
-        button.href = "index.html";
-        button.className = "toggle-button";
-        button.id = "back";
-        button.appendChild(document.createTextNode("Back"));
-        document.body.appendChild(button);
+        var button3 = document.createElement("a");
+        button3.href = "index.html";
+        button3.className = "toggle-button";
+        button3.id = "back";
+        button3.appendChild(document.createTextNode("Back"));
+        divElement.appendChild(button3)
+        //document.body.appendChild(button3);
+
+        document.body.appendChild(divElement);
 
         document.getElementById('ClearScores').addEventListener('click', function () {
             var jsonString = '{"scores":[]}';
